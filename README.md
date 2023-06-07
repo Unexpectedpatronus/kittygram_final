@@ -10,22 +10,45 @@
 
 Запуск сборки контейнеров:
 ```
- sudo docker compose -f docker-compose.production.yml up -d 
+docker compose -f docker-compose.production.yml up -d 
 ```
 Выполнение миграций:
 ```
- sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
+docker compose -f docker-compose.production.yml exec backend python manage.py migrate
 ```
 Сбор статики проекта и копирование в связанную с контейнерами директорию:
 ```
-sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic 
+docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic 
 ```
 ```
-sudo docker compose -f docker-compose.production.yml exec backend cp -r /app/collected_static/. /backend_static/static/ 
+docker compose -f docker-compose.production.yml exec backend cp -r /app/collected_static/. /backend_static/static/ 
 ```
 Создание суперпользователя:
 ```
- sudo docker compose -f docker-compose.production.yml exec backend python manage.py createsuperuser 
+docker compose -f docker-compose.production.yml exec backend python manage.py createsuperuser 
+```
+
+#### Если не хватает места на диске:
+Команда для очистки кеша npm:
+```
+npm cache clean
+```
+Команда для очистки кеша APT: 
+```
+sudo apt-get clean
+```
+Также:
+```
+sudo docker system prune -a
+```
+```
+sudo journalctl --vacuum-size=100M
+```
+```
+sudo journalctl --vacuum-time=1d
+```
+```
+sudo journalctl --vacuum-files=10
 ```
 
 ### Стэк технологий:
