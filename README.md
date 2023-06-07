@@ -1,26 +1,44 @@
-#  Как работать с репозиторием финального задания
+# Kittygram
 
-## Что нужно сделать
+### Как развернуть проект локально в контейнерах:
 
-Настроить запуск проекта Kittygram в контейнерах и CI/CD с помощью GitHub Actions
+Создать директорию Kittygram со следующими файлами:
+- docker-compose.production.yml
+- .env (по образцу .env.example)
 
-## Как проверить работу с помощью автотестов
+#### Выполнить команды в терминале из директории Kittygram:
 
-В корне репозитория создайте файл tests.yml со следующим содержимым:
-```yaml
-repo_owner: ваш_логин_на_гитхабе
-kittygram_domain: полная ссылка (https://доменное_имя) на ваш проект Kittygram
-taski_domain: полная ссылка (https://доменное_имя) на ваш проект Taski
-dockerhub_username: ваш_логин_на_докерхабе
+Запуск сборки контейнеров:
+```
+ sudo docker compose -f docker-compose.production.yml up -d 
+```
+Выполнение миграций:
+```
+ sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
+```
+Сбор статики проекта и копирование в связанную с контейнерами директорию:
+```
+sudo docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic 
+```
+```
+sudo docker compose -f docker-compose.production.yml exec backend cp -r /app/collected_static/. /backend_static/static/ 
+```
+Создание суперпользователя:
+```
+ sudo docker compose -f docker-compose.production.yml exec backend python manage.py createsuperuser 
 ```
 
-Скопируйте содержимое файла `.github/workflows/main.yml` в файл `kittygram_workflow.yml` в корневой директории проекта.
+### Стэк технологий:
 
-Для локального запуска тестов создайте виртуальное окружение, установите в него зависимости из backend/requirements.txt и запустите в корневой директории проекта `pytest`.
+При создании проекта использовались следующие технологии:
+- Python
+- Django framework
+- Django-rest-framework
+- Node.js
+- Docker
 
-## Чек-лист для проверки перед отправкой задания
+### Об авторе:
 
-- Проект Taski доступен по доменному имени, указанному в `tests.yml`.
-- Проект Kittygram доступен по доменному имени, указанному в `tests.yml`.
-- Пуш в ветку main запускает тестирование и деплой Kittygram, а после успешного деплоя вам приходит сообщение в телеграм.
-- В корне проекта есть файл `kittygram_workflow.yml`.
+Автор проекта: Одинцов Е.В.
+
+ссылка на GitHub: [Unexpectedpatronus](https://github.com/Unexpectedpatronus)
